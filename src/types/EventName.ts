@@ -31,6 +31,7 @@ export type EventPayload<T extends Event | never> = T extends never
       [
         { case: 'push'; value: PushEvent },
         { case: 'tag_push'; value: TagPushEvent },
+        { case: 'issue'; value: IssueEvent },
         { case: 'note'; value: NoteEvent },
         { case: 'merge_request'; value: MergeRequestEvent },
         { case: 'wiki_page'; value: WikiPageEvent },
