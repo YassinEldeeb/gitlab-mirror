@@ -2,7 +2,7 @@ require('dotenv').config()
 import express from 'express'
 import { handleEvent } from './lib/mergeEvents'
 import { auth } from './middleware/auth'
-import { PossibleEventsType } from './types/EventName'
+import { PossibleEventsType } from './types/events'
 
 const app = express()
 
