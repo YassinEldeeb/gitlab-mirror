@@ -1,4 +1,4 @@
-import { format, differenceInDays } from 'date-fns'
+import { differenceInDays } from 'date-fns'
 import { getUserImage } from '../helpers/getUserImage'
 import { eventHandler } from '../lib/eventHandler'
 import { github, prisma } from '../setup'
@@ -10,15 +10,13 @@ export default eventHandler<'note'>(async (event) => {
   }
   const gitlabID = event.user.id
 
-  console.log(event)
-
-  const genImage = await getUserImage(event.user.avatar_url, event.user.name)
-
   let user = await prisma.user.findUnique({
     where: { gitlabID },
   })
 
   if (user && differenceInDays(user.updatedAt, Date.now()) > 7) {
+    const genImage = await getUserImage(event.user.avatar_url, event.user.name)
+
     await prisma.user.update({
       data: {
         profilePic: genImage,
@@ -26,6 +24,8 @@ export default eventHandler<'note'>(async (event) => {
       where: { gitlabID },
     })
   } else {
+    const genImage = await getUserImage(event.user.avatar_url, event.user.name)
+
     user = await prisma.user.create({
       data: {
         gitlabID,
