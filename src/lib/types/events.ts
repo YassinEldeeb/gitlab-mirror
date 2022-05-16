@@ -82,6 +82,9 @@ export interface IssueEvent {
   repository: Repository
   object_attributes: IssueAttributes
   assignees: User[]
+  /**
+   * @deprecated contains the first assignee only, use {@link assignees} instead.
+   */
   assignee: User
   labels: Label[]
   changes: Changes
@@ -103,8 +106,10 @@ export interface IssueAttributes {
   state: string
   iid: number
   url: string
-  action: string
+  action: IssueAction
 }
+
+export type IssueAction = 'open' | 'close' | 'reopen' | 'update'
 
 export interface NoteEvent {
   object_kind: Event
@@ -122,7 +127,7 @@ export interface NoteEvent {
 export interface NoteAttributes {
   id: number
   note: string
-  noteable_type: string
+  noteable_type: NoteType
   author_id: number
   created_at: string
   updated_at: string
@@ -135,6 +140,8 @@ export interface NoteAttributes {
   st_diff: StDiff
   url: string
 }
+
+export type NoteType = 'Commit' | 'Merge_request' | 'Issue'
 
 export interface MergeRequestEvent {
   object_kind: Event
@@ -316,9 +323,16 @@ export interface Label {
 }
 
 export interface Changes {
+  title?: TrackStringValue
+  description?: TrackStringValue
   updated_by_id: number[]
   updated_at: string[]
-  labels: Labels
+  labels?: Labels
+}
+
+export interface TrackStringValue {
+  previous: string
+  current: string
 }
 
 export interface Labels {
@@ -382,7 +396,9 @@ export interface Assets {
 }
 
 export interface User {
+  id: number
   name: string
+  email?: string
   username: string
   avatar_url: string
 }
