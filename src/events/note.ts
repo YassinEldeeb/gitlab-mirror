@@ -34,8 +34,8 @@ export default eventHandler<'note'>(async (event) => {
     })
   }
 
-  const commentTemplate = `![${event.user.name}](${process.env.SERVER_URL}/profilePic/${user.id})
-  ${event.object_attributes.note}`
+  const commentTemplate = `[![${event.user.name}](${process.env.SERVER_URL}/profilePic/${user.id})
+  ${event.object_attributes.note}](https://gitlab.com/${event.user.username})`
 
   switch (event.object_attributes.noteable_type) {
     case 'Issue':
